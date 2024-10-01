@@ -1,3 +1,33 @@
-.botao-margin {
-  margin-right: 3px;
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Guides:wght@400;700&display=swap');
+
+body {
+    background-image: url("https://img.freepik.com/fotos-gratis/arranjo-de-livros-antigos-com-espaco-de-copia_23-2148898331.jpg?w=740&t=st=1727740487~exp=1727741087~hmac=f96d7891ac288c99f08131f8ef0ba9e400a42693d2338abffe94cb37d335df27"); 
+    background-attachment: fixed;
 }
+
+.container {
+    text-align: center; 
+}
+
+ h1 {
+        position: relative;
+        top: 80px;
+        font-family: "Edu AU VIC WA NT Guides", cursive;
+        font-weight: 700;
+        font-style: normal;
+        font-size: 4rem; 
+        text-align: center;
+        color: black; 
+        
+    }
+
+
+    .links {
+
+        display: flex; 
+        list-style-type: none; 
+        justify-content: center;
+        position: relative;
+        top: -70px;
+        font-size: 20px; 
+    }

@@ -1,0 +1,16 @@
+p {
+
+   font-family: Georgia, Times, "Times New Roman", serif; 
+   font-size: 20px; 
+   font-style: normal; 
+   font-variant: normal; 
+   font-weight: 400; 
+   line-height: 20px; 
+   text-align: center;
+   list-style-type: none; 
+   justify-content: center;
+   position: relative;
+   left: 10px;
+   top: 150px;
+
+}

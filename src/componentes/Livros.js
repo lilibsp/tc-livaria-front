@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Button, Form, Modal, Table } from 'react-bootstrap';
+import './Livros.css';
 
 export class Livros extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
+      _id: null,
       titulo: '',
       autor: '',
       editora: '',
-      modalAberta: false,
-      livros: []
+      modalTipo: null,
+      livros: [],
     };
   }
 
@@ -25,11 +26,11 @@ export class Livros extends Component {
       .catch(console.error);
   }
 
-  buscarLivro(id) {
-    fetch(`/livros/${id}`)
+  buscarLivro(_id) {   //para a edição
+    fetch(`/livros/${_id}`)
       .then(resposta => resposta.json())
       .then(dados => this.setState({
-        id: dados.id,
+        _id: dados._id,
         titulo: dados.titulo,
         autor: dados.autor,
         editora: dados.editora
@@ -56,16 +57,16 @@ export class Livros extends Component {
   }
 
   atualizarLivro() {
-    const { id, titulo, autor, editora } = this.state;
+    const { _id, titulo, autor, editora } = this.state;
 
-    if (!id) {
+    if (!_id) {
       alert('ID do livro não encontrado');
       return;
     }
 
-    const livro = { id, titulo, autor, editora };
+    const livro = { _id, titulo, autor, editora };
 
-    fetch(`/livros/${livro.id}`, {
+    fetch(`/livros/${livro._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(livro)
@@ -79,18 +80,20 @@ export class Livros extends Component {
     }).catch(console.error);
   }
 
-  excluirLivro(id) {
-    fetch(`/livros/${id}`, {
-      method: 'DELETE',
-    })
-    .then(resposta => {
-      if (resposta.ok) {
-        this.listarLivros();
-      } else {
-        alert('Erro ao excluir o livro');
-      }
-    })
-    .catch(console.error);
+  excluirLivro(_id) {
+    if (window.confirm('Confirma exclusão?')) {
+      fetch(`/livros/${_id}`, {
+        method: 'DELETE',
+      })
+        .then(resposta => {
+          if (resposta.ok) {
+            this.listarLivros();
+          } else {
+            alert('Erro ao excluir o livro');
+          }
+        })
+        .catch(console.error);
+    }
   }
 
   atualizaCampo = (campo) => (e) => {
@@ -98,25 +101,30 @@ export class Livros extends Component {
   }
 
   abrirModalInserir = () => {
-    this.setState({ modalAberta: true, id: null, titulo: '', autor: '', editora: '' });
+    this.setState({ modalTipo: 'inserir', _id: null, titulo: '', autor: '', editora: '' });
   }
 
-  abrirModalAtualizar = (id) => {
-    this.setState({ modalAberta: true });
-    this.buscarLivro(id);
+  abrirModalAtualizar = (_id) => {
+    this.setState({ modalTipo: 'inserir' });
+    this.buscarLivro(_id);
   }
 
   fecharModal = () => {
-    this.setState({ id: null, titulo: '', autor: '', editora: '', modalAberta: false });
+    this.setState({ _id: null, titulo: '', autor: '', editora: '', modalTipo: null });
   }
 
   submit = () => {
-    this.state.id ? this.atualizarLivro() : this.cadastrarLivro();
+    const { _id } = this.state;
+    if (_id === null) {
+      this.cadastrarLivro();
+    } else {
+      this.atualizarLivro();
+    }
   }
 
   renderModal() {
     return (
-      <Modal show={this.state.modalAberta} onHide={this.fecharModal}>
+      <Modal show={this.state.modalTipo === 'inserir'} onHide={this.fecharModal}>
         <Modal.Header closeButton>
           <Modal.Title>Preencha os dados do livro</Modal.Title>
         </Modal.Header>
@@ -144,6 +152,7 @@ export class Livros extends Component {
     );
   }
 
+  
   renderTabela() {
     return (
       <Table striped bordered hover>
@@ -157,13 +166,13 @@ export class Livros extends Component {
         </thead>
         <tbody>
           {this.state.livros.map(livro => (
-            <tr key={livro.id}>
-              <td>{livro.titulo}</td>
-              <td>{livro.autor}</td>
-              <td>{livro.editora}</td>
+            <tr key={livro._id}>
+              <td className="tabela-estilo">{livro.titulo}</td>
+              <td className="tabela-estilo">{livro.autor}</td>
+              <td className="tabela-estilo">{livro.editora}</td>
               <td>
-                <Button className="btn btn-info" onClick={() => this.abrirModalAtualizar(livro.id)}>Editar</Button>
-                <Button className="btn btn-danger" onClick={() => this.excluirLivro(livro.id)}>Excluir</Button>
+                <Button className="btn btn-info btn-espaco" onClick={() => this.abrirModalAtualizar(livro._id)}>Editar</Button>
+                <Button className="btn btn-danger" onClick={() => this.excluirLivro(livro._id)}>Excluir</Button>
               </td>
             </tr>
           ))}
@@ -175,7 +184,7 @@ export class Livros extends Component {
   render() {
     return (
       <div>
-        <Button variant="primary" onClick={this.abrirModalInserir}>Adicionar Livro</Button>
+        <Button variant="primary" className="botao add" onClick={this.abrirModalInserir}>Adicionar Livro</Button>
         {this.renderTabela()}
         {this.renderModal()}
       </div>
