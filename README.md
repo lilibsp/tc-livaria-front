@@ -3,7 +3,7 @@
 
 Este é um projeto de uma aplicação de gerenciamento de livros, desenvolvido como parte do 3º Tech Challenge do curso Pós Tech Dev Foundations. A aplicação permite visualizar, adicionar, editar e excluir livros.
 
---> Esse projeto usa a API criada em https://github.com/lilibsp/Tech-Challenge-Livraria. É necessário que esse servidor esteja rodando para que o projeto funcione.
+--> Esse projeto é o desenvolvimento do front-end da API criada em https://github.com/lilibsp/Tech-Challenge-Livraria. 
 
 # Estrutura do Projeto
   # Arquivos Principais
